@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:petshop/src/ui/constants.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -37,9 +39,12 @@ class _LoginPageState extends State<LoginPage> {
                           height: 200.0,
                         ),
                         const SizedBox(
-                          height: 24,
+                          height: 40,
                         ),
                         TextFormField(
+                          style: const TextStyle(
+                            color: Colors.white, // Cor do texto digitado
+                          ),
                           decoration: const InputDecoration(
                             label: Text('Usuário'),
                             hintText: 'Usuário',
@@ -54,9 +59,13 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         const SizedBox(
-                          height: 24,
+                          height: 20,
                         ),
                         TextFormField(
+                          obscureText: true,
+                          style: const TextStyle(
+                            color: Colors.white, // Cor do texto digitado
+                          ),
                           decoration: const InputDecoration(
                             label: Text('Senha'),
                             hintText: 'Senha',
@@ -71,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         const SizedBox(
-                          height: 16,
+                          height: 20,
                         ),
                         const Align(
                           alignment: Alignment.centerLeft,
@@ -84,18 +93,21 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         const SizedBox(
-                          height: 24,
+                          height: 20,
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              minimumSize: const Size.fromHeight(56),
-                              backgroundColor: Colors.green),
+                            minimumSize: const Size.fromHeight(56),
+                            backgroundColor: ColorsConstants.strongGreen,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  10.0), // Define o raio da borda
+                            ),
+                          ),
                           onPressed: () {},
                           child: const Text(
                             'Acessar',
-                            style: TextStyle(
-                              fontSize: 18.0
-                            ),
+                            style: TextStyle(fontSize: 18.0),
                           ),
                         ),
                       ],

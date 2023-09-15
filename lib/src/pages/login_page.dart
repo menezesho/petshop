@@ -89,12 +89,12 @@ class _LoginPageState extends State<LoginPage> {
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               minimumSize: const Size.fromHeight(56),
-                              backgroundColor: Colors.brown),
+                              backgroundColor: Colors.green),
                           onPressed: () {},
                           child: const Text(
                             'Acessar',
                             style: TextStyle(
-                              fontSize: 16.0
+                              fontSize: 18.0
                             ),
                           ),
                         ),

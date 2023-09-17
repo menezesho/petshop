@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:petshop/src/pages/register-page.dart';
 import 'package:petshop/src/ui/constants.dart';
 
 class LoginPage extends StatefulWidget {
@@ -18,7 +18,7 @@ class _LoginPageState extends State<LoginPage> {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/background_login_image.jpg'),
-            opacity: 0.2,
+            opacity: 0.3,
             fit: BoxFit.cover,
           ),
         ),
@@ -100,15 +100,61 @@ class _LoginPageState extends State<LoginPage> {
                             minimumSize: const Size.fromHeight(56),
                             backgroundColor: ColorsConstants.strongGreen,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  10.0), // Define o raio da borda
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
                           onPressed: () {},
                           child: const Text(
                             'Acessar',
-                            style: TextStyle(fontSize: 18.0),
+                            style: TextStyle(fontSize: 16.0),
                           ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size.fromHeight(56),
+                            backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              side: const BorderSide(
+                                color: Colors.white,
+                                width: 1.0,
+                              ),
+                            ),
+                          ),
+                          child: const Text(
+                            'Primeiro acesso',
+                            style: TextStyle(fontSize: 16.0),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) {
+                                  return const RegisterPage();
+                                },
+                                transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) {
+                                  const begin = Offset(1.0, 0.0);
+                                  const end = Offset.zero;
+                                  const curve = Curves.easeInOut;
+
+                                  var tween = Tween(begin: begin, end: end)
+                                      .chain(CurveTween(curve: curve));
+                                  var offsetAnimation = animation.drive(tween);
+
+                                  return SlideTransition(
+                                    position: offsetAnimation,
+                                    child: child,
+                                  );
+                                },
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),

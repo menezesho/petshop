@@ -49,20 +49,69 @@ class _RegisterPageState extends State<RegisterPage> {
                         height: 40,
                       ),
                       TextFormField(
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                            label: Text('Senha'),
-                            hintText: 'Senha',
-                            contentPadding: EdgeInsets.all(15),
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            labelStyle: TextStyle(color: ColorsConstants.grey),
-                            hintStyle: TextStyle(color: ColorsConstants.grey),
-                          ),
+                        decoration: const InputDecoration(
+                          label: Text('Nome'),
+                          hintText: 'Digite seu nome',
                         ),
-
-
-
-
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          label: Text('CPF'),
+                          hintText: 'Digite seu CPF',
+                        ),
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        keyboardType: TextInputType.datetime,
+                        decoration: const InputDecoration(
+                          label: Text('Nascimento'),
+                          hintText: 'Digite sua data de nascimento',
+                        ),
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: const InputDecoration(
+                          label: Text('E-mail'),
+                          hintText: 'Digite seu e-mail',
+                        ),
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          label: Text('Usuário'),
+                          hintText: 'Digite seu usuário',
+                        ),
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          label: Text('Senha'),
+                          hintText: 'Digite sua senha',
+                        ),
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size.fromHeight(40),

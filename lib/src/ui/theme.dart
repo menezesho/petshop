@@ -7,12 +7,31 @@ sealed class PetShopTheme {
       borderSide: BorderSide(color: ColorsConstants.grey));
 
   static ThemeData themeData = ThemeData(
-    colorScheme: ColorScheme.fromSeed(seedColor: Colors.white, primary: ColorsConstants.grey),
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: Colors.white,
+      primary: ColorsConstants.grey,
+    ),
+    textTheme: const TextTheme(
+      labelMedium: TextStyle(
+        color: ColorsConstants.grey,
+        fontSize: 14,
+        fontWeight: FontWeight.normal,
+      ),
+    ),
     inputDecorationTheme: InputDecorationTheme(
+      floatingLabelBehavior: FloatingLabelBehavior.never,
+      contentPadding: const EdgeInsets.all(15),
       filled: true,
       fillColor: Colors.white,
       labelStyle: const TextStyle(
         color: ColorsConstants.grey,
+        fontSize: 14,
+        fontWeight: FontWeight.normal,
+      ),
+      hintStyle: const TextStyle(
+        color: ColorsConstants.grey,
+        fontSize: 14,
+        fontWeight: FontWeight.w300,
       ),
       border: _defaultInputBorder,
       enabledBorder: _defaultInputBorder,

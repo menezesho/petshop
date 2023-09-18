@@ -42,41 +42,64 @@ class _LoginPageState extends State<LoginPage> {
                           height: 40,
                         ),
                         TextFormField(
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 14),
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.all(15),
-                            label: Text(
-                              'Usuário',
-                              style: TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
+                          decoration: InputDecoration(
+                            fillColor: Colors.transparent,
+                            label: const Text('Usuário'),
                             hintText: 'Usuário',
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            labelStyle: TextStyle(color: Colors.white),
-                            hintStyle: TextStyle(color: Colors.white),
+                            labelStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                            ),
+                            hintStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                            ),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                  color: Colors.green, width: 2.0),
                             ),
                           ),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          ),
+                          cursorColor: Colors.white,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
                         TextFormField(
                           obscureText: true,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             fillColor: Colors.transparent,
-                            label: Text('Senha'),
+                            label: const Text('Senha'),
                             hintText: 'Senha',
-                            contentPadding: EdgeInsets.all(15),
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            labelStyle: TextStyle(color: ColorsConstants.grey),
-                            hintStyle: TextStyle(color: ColorsConstants.grey),
+                            labelStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                            ),
+                            hintStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                  color: Colors.green, width: 2.0),
+                            ),
                           ),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          ),
+                          cursorColor: Colors.white,
                         ),
                         const SizedBox(
                           height: 20,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:petshop/src/pages/login_page.dart';
 import 'package:petshop/src/ui/theme.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: PetShopTheme.themeData,
-      home: const LoginPage(),
+      home: LoginPage(),
     );
   }
 }

@@ -13,6 +13,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        shadowColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_circle_left,
               color: ColorsConstants.strongGreen),
@@ -28,13 +29,13 @@ class _RegisterPageState extends State<RegisterPage> {
           style: const TextStyle(
             color: ColorsConstants.strongGreen,
             fontSize: 16,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w900,
           ),
         ),
       ),
       backgroundColor: ColorsConstants.lightGreen,
       body: Padding(
-        padding: const EdgeInsets.all(30.0),
+        padding: const EdgeInsets.symmetric(horizontal: 30.0),
         child: CustomScrollView(
           slivers: [
             SliverFillRemaining(
@@ -46,7 +47,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       const SizedBox(
-                        height: 40,
+                        height: 20,
                       ),
                       TextFormField(
                         decoration: const InputDecoration(
@@ -110,7 +111,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         style: Theme.of(context).textTheme.labelMedium,
                       ),
                       const SizedBox(
-                        height: 10,
+                        height: 20,
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(

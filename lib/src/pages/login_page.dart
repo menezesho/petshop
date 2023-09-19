@@ -1,9 +1,17 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:petshop/src/database/mysql_configuration.dart';
+import 'package:petshop/src/pages/home_page.dart';
 import 'package:petshop/src/pages/register-page.dart';
 import 'package:petshop/src/ui/constants.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  LoginPage({super.key});
+
+  final TextEditingController _userController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  String? _userErrorText;
+  String? _passwordErrorText;
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -42,6 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                           height: 40,
                         ),
                         TextFormField(
+                          controller: widget._userController,
                           decoration: InputDecoration(
                             fillColor: Colors.transparent,
                             label: const Text('Usuário'),
@@ -61,6 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                               borderSide: const BorderSide(
                                   color: Colors.green, width: 2.0),
                             ),
+                            errorText: widget._userErrorText,
                           ),
                           style: const TextStyle(
                             color: Colors.white,
@@ -73,6 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                           height: 10,
                         ),
                         TextFormField(
+                          controller: widget._passwordController,
                           obscureText: true,
                           decoration: InputDecoration(
                             fillColor: Colors.transparent,
@@ -93,6 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                               borderSide: const BorderSide(
                                   color: Colors.green, width: 2.0),
                             ),
+                            errorText: widget._passwordErrorText,
                           ),
                           style: const TextStyle(
                             color: Colors.white,
@@ -130,20 +142,8 @@ class _LoginPageState extends State<LoginPage> {
                             style: TextStyle(fontSize: 16.0),
                           ),
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              PageRouteBuilder(
-                                pageBuilder:
-                                    (context, animation, secondaryAnimation) {
-                                  return const RegisterPage();
-                                },
-                                transitionsBuilder: (context, animation,
-                                    secondaryAnimation, child) {
-                                  return customTransition(
-                                      context, animation, child);
-                                },
-                              ),
-                            );
+                            submit(widget._userController.text,
+                                widget._passwordController.text);
                           },
                         ),
                         const SizedBox(
@@ -209,5 +209,66 @@ class _LoginPageState extends State<LoginPage> {
       position: offsetAnimation,
       child: child,
     );
+  }
+
+  void submit(String user, String password) async {
+    var connect = await MySqlConfiguration().connection;
+    var result = await connect.query(
+        "SELECT ID, NOME, USUARIO FROM PESSOA WHERE USUARIO = '$user' AND SENHA = '$password';");
+    validateField();
+    if (widget._userController.text.isNotEmpty) {
+      if (widget._passwordController.text.isNotEmpty) {
+        if (result.isEmpty) {
+          failAcess();
+        } else {
+          successfulAcess();
+        }
+      }
+    }
+  }
+
+  void successfulAcess() {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return const HomePage();
+        },
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return customTransition(context, animation, child);
+        },
+      ),
+    );
+  }
+
+  void failAcess() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Usuário e/ou senha inválidos!"),
+        backgroundColor: ColorsConstants.red,
+      ),
+    );
+  }
+
+  void validateField() {
+    if (widget._userController.text.isEmpty) {
+      setState(() {
+        widget._userErrorText = 'Este campo deve ser preenchido!';
+      });
+    } else {
+      setState(() {
+        widget._userErrorText = null;
+      });
+    }
+
+    if (widget._passwordController.text.isEmpty) {
+      setState(() {
+        widget._passwordErrorText = 'Este campo deve ser preenchido!';
+      });
+    } else {
+      setState(() {
+        widget._passwordErrorText = null;
+      });
+    }
   }
 }

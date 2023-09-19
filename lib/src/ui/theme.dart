@@ -33,6 +33,11 @@ sealed class PetShopTheme {
         fontSize: 14,
         fontWeight: FontWeight.w300,
       ),
+      errorStyle: const TextStyle(
+        color: ColorsConstants.red,
+        fontSize: 14,
+        fontWeight: FontWeight.w300,
+      ),
       border: _defaultInputBorder,
       enabledBorder: _defaultInputBorder,
       focusedBorder: _defaultInputBorder,

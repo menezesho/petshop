@@ -186,6 +186,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void successful() {
+    Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text("Cadastro efetuado com sucesso!"),

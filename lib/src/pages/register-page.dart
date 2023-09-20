@@ -12,6 +12,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorsConstants.lightGreen,
       appBar: AppBar(
         shadowColor: Colors.transparent,
         leading: IconButton(
@@ -22,7 +23,7 @@ class _RegisterPageState extends State<RegisterPage> {
             Navigator.pop(context);
           },
         ),
-        backgroundColor: ColorsConstants.lightGreen,
+        
         centerTitle: true,
         title: Text(
           'registro'.toUpperCase(),
@@ -33,7 +34,6 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
       ),
-      backgroundColor: ColorsConstants.lightGreen,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30.0),
         child: CustomScrollView(

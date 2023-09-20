@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:petshop/src/database/mysql_configuration.dart';
 import 'package:petshop/src/pages/home_page.dart';
@@ -10,14 +9,14 @@ class LoginPage extends StatefulWidget {
 
   final TextEditingController _userController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  String? _userErrorText;
-  String? _passwordErrorText;
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,152 +38,166 @@ class _LoginPageState extends State<LoginPage> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/logo_petshop.png',
-                          height: 180.0,
-                        ),
-                        const SizedBox(
-                          height: 40,
-                        ),
-                        TextFormField(
-                          controller: widget._userController,
-                          decoration: InputDecoration(
-                            fillColor: Colors.transparent,
-                            label: const Text('Usuário'),
-                            hintText: 'Usuário',
-                            labelStyle: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
-                            ),
-                            hintStyle: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(
-                                  color: Colors.green, width: 2.0),
-                            ),
-                            errorText: widget._userErrorText,
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/logo_petshop.png',
+                            height: 180.0,
                           ),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
+                          const SizedBox(
+                            height: 40,
                           ),
-                          cursorColor: Colors.white,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        TextFormField(
-                          controller: widget._passwordController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            fillColor: Colors.transparent,
-                            label: const Text('Senha'),
-                            hintText: 'Senha',
-                            labelStyle: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
-                            ),
-                            hintStyle: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.normal,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(
-                                  color: Colors.green, width: 2.0),
-                            ),
-                            errorText: widget._passwordErrorText,
-                          ),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                          ),
-                          cursorColor: Colors.white,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Esqueceu a senha?',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: const Size.fromHeight(40),
-                            backgroundColor: ColorsConstants.strongGreen,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                          ),
-                          child: const Text(
-                            'Acessar',
-                            style: TextStyle(fontSize: 16.0),
-                          ),
-                          onPressed: () {
-                            submit(widget._userController.text,
-                                widget._passwordController.text);
-                          },
-                        ),
-                        const SizedBox(
-                          height: 2,
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: const Size.fromHeight(40),
-                            backgroundColor: Colors.transparent,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              side: const BorderSide(
+                          TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'O usuário deve ser informado';
+                              }
+                              return null;
+                            },
+                            controller: widget._userController,
+                            decoration: InputDecoration(
+                              fillColor: Colors.transparent,
+                              label: const Text('Usuário'),
+                              hintText: 'Usuário',
+                              labelStyle: const TextStyle(
                                 color: Colors.white,
-                                width: 1.0,
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                              ),
+                              hintStyle: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: const BorderSide(
+                                    color: Colors.green, width: 2.0),
+                              ),
+                            ),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                            ),
+                            cursorColor: Colors.white,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'A senha deve ser informada';
+                              }
+                              return null;
+                            },
+                            controller: widget._passwordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              fillColor: Colors.transparent,
+                              label: const Text('Senha'),
+                              hintText: 'Senha',
+                              labelStyle: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                              ),
+                              hintStyle: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: const BorderSide(
+                                    color: Colors.green, width: 2.0),
+                              ),
+                            ),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                            ),
+                            cursorColor: Colors.white,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Esqueceu a senha?',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
                               ),
                             ),
                           ),
-                          child: const Text(
-                            'Primeiro acesso',
-                            style: TextStyle(
-                                fontSize: 16.0, fontWeight: FontWeight.normal),
+                          const SizedBox(
+                            height: 20,
                           ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              PageRouteBuilder(
-                                pageBuilder:
-                                    (context, animation, secondaryAnimation) {
-                                  return const RegisterPage();
-                                },
-                                transitionsBuilder: (context, animation,
-                                    secondaryAnimation, child) {
-                                  return customTransition(
-                                      context, animation, child);
-                                },
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size.fromHeight(40),
+                              backgroundColor: ColorsConstants.strongGreen,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
                               ),
-                            );
-                          },
-                        ),
-                      ],
+                            ),
+                            child: const Text(
+                              'Acessar',
+                              style: TextStyle(fontSize: 16.0),
+                            ),
+                            onPressed: () {
+                              submit(widget._userController.text,
+                                  widget._passwordController.text);
+                            },
+                          ),
+                          const SizedBox(
+                            height: 2,
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size.fromHeight(40),
+                              backgroundColor: Colors.transparent,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                side: const BorderSide(
+                                  color: Colors.white,
+                                  width: 1.0,
+                                ),
+                              ),
+                            ),
+                            child: const Text(
+                              'Primeiro acesso',
+                              style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder:
+                                      (context, animation, secondaryAnimation) {
+                                    return const RegisterPage();
+                                  },
+                                  transitionsBuilder: (context, animation,
+                                      secondaryAnimation, child) {
+                                    return customTransition(
+                                        context, animation, child);
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -212,27 +225,30 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void submit(String user, String password) async {
+    // Verifica os campos do formulário
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    // Realiza a conexão com o banco de dados
     var connect = await MySqlConfiguration().connection;
+    // Realiza a consulta no banco de dados
     var result = await connect.query(
         "SELECT ID, NOME, USUARIO FROM PESSOA WHERE USUARIO = '$user' AND SENHA = '$password';");
-    validateField();
-    if (widget._userController.text.isNotEmpty) {
-      if (widget._passwordController.text.isNotEmpty) {
-        if (result.isEmpty) {
-          failAcess();
-        } else {
-          successfulAcess();
-        }
-      }
+    if (result.isEmpty) {
+      failAcess(); // Acesso negado
+    } else {
+      String name = result.first['NOME'].toString();
+      successfulAcess(name); // Acesso autorizado
     }
   }
 
-  void successfulAcess() {
+  void successfulAcess(String name) {
+    widget._userController.text = name;
     Navigator.push(
       context,
       PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) {
-          return const HomePage();
+          return HomePage(name: name);
         },
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return customTransition(context, animation, child);
@@ -248,27 +264,5 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: ColorsConstants.red,
       ),
     );
-  }
-
-  void validateField() {
-    if (widget._userController.text.isEmpty) {
-      setState(() {
-        widget._userErrorText = 'Este campo deve ser preenchido!';
-      });
-    } else {
-      setState(() {
-        widget._userErrorText = null;
-      });
-    }
-
-    if (widget._passwordController.text.isEmpty) {
-      setState(() {
-        widget._passwordErrorText = 'Este campo deve ser preenchido!';
-      });
-    } else {
-      setState(() {
-        widget._passwordErrorText = null;
-      });
-    }
   }
 }

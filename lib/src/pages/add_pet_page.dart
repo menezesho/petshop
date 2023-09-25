@@ -16,8 +16,7 @@ class _AddPetPageState extends State<AddPetPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _birthController = TextEditingController();
   String? typeSelectedItem;
-  String? raceSelectedItem;
-  String? sizeSelectedItem;
+  String? breedSelectedItem;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +38,7 @@ class _AddPetPageState extends State<AddPetPage> {
           'cadastro do pet'.toUpperCase(),
           style: const TextStyle(
             color: ColorsConstants.strongGreen,
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.w900,
           ),
         ),
@@ -102,42 +101,70 @@ class _AddPetPageState extends State<AddPetPage> {
                         const SizedBox(
                           height: 10,
                         ),
-                        FormField<String>(
-                          builder: (FormFieldState<String> state) {
-                            return InputDecorator(
-                              decoration: InputDecoration(
-                                labelText: 'Selecione uma opção',
-                                errorText: state.errorText,
-                              ),
-                              isEmpty: typeSelectedItem == null,
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
-                                  value: typeSelectedItem,
-                                  isDense: true,
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      typeSelectedItem = newValue;
-                                    });
-                                  },
-                                  items: <String>[
-                                    'Opção 1',
-                                    'Opção 2',
-                                    'Opção 3',
-                                    // Adicione suas opções aqui
-                                  ].map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                            );
+                        DropdownButtonFormField(
+                          //hint: const Text('Tipo'),
+                          decoration: const InputDecoration(
+                              hintText: 'Selecione o tipo do pet',
+                              labelText: 'Tipo'),
+                          items: const [
+                            DropdownMenuItem(
+                              value: 'Cachorro',
+                              child: Text('Cachorro'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'Gato',
+                              child: Text('Gato'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'Hamster',
+                              child: Text('Hamster'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'Coelho',
+                              child: Text('Coelho'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'Porquinho da Índia',
+                              child: Text('Porquinho da Índia'),
+                            ),
+                          ],
+                          onChanged: (value) {},
+                          style: Theme.of(context).textTheme.labelMedium,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'O tipo deve ser selecionado!';
+                            }
+                            return null;
                           },
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 10,
+                        ),
+                        DropdownButtonFormField(
+                          decoration: const InputDecoration(
+                              hintText: 'Selecione a raça do pet',
+                              labelText: 'Raça'),
+                          items: const [
+                            DropdownMenuItem(
+                              value: 'teste',
+                              child: Text('teste'),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              breedSelectedItem = value.toString();
+                            });
+                          },
+                          style: Theme.of(context).textTheme.labelMedium,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'A raça deve ser selecionada!';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(
+                          height: 10,
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -148,22 +175,18 @@ class _AddPetPageState extends State<AddPetPage> {
                             ),
                           ),
                           child: const Text(
-                            'Registrar',
+                            'Adicionar',
                             style: TextStyle(fontSize: 16.0),
                           ),
                           onPressed: () {
-                            // if (_formKey.currentState!.validate()) {
-                            //   submit(
-                            //       _nameController.text,
-                            //       _cpfController.text
-                            //           .replaceAll('.', '')
-                            //           .replaceAll('-', ''),
-                            //       DateTime.parse(_birthController.text
-                            //           .replaceAll('/', '')),
-                            //       _emailController.text,
-                            //       _userController.text,
-                            //       _passwordController.text);
-                            // }
+                            if (_formKey.currentState!.validate()) {
+                              submit(
+                                  _nameController.text,
+                                  DateTime.parse(_birthController.text
+                                      .replaceAll('/', '')),
+                                  typeSelectedItem!,
+                                  breedSelectedItem!);
+                            }
                           },
                         ),
                       ],
@@ -178,8 +201,7 @@ class _AddPetPageState extends State<AddPetPage> {
     );
   }
 
-  void submit(String name, String cpf, DateTime birth, String email,
-      String user, String password) async {
+  void submit(String name, DateTime birth, String type, String breed) async {
     // Verifica os campos do formulário
     if (!_formKey.currentState!.validate()) {
       return;
@@ -189,7 +211,7 @@ class _AddPetPageState extends State<AddPetPage> {
     try {
       // Realiza a inserção no banco de dados
       await connect.query(
-          "INSERT INTO PESSOA (NOME, CPF, NASCIMENTO, EMAIL, USUARIO, SENHA) VALUES ('$name', '$cpf', '$birth', '$email', '$user', '$password');");
+          "INSERT INTO ANIMAL (NOME, NASCIMENTO, TIPO, ID_RACA) VALUES (?, ?, ?, ?);", [name, birth, type, breed]);
       successful();
     } catch (e) {
       fail(e);

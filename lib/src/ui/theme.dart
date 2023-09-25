@@ -15,12 +15,12 @@ sealed class PetShopTheme {
       labelMedium: TextStyle(
         color: ColorsConstants.grey,
         fontSize: 14,
-        fontWeight: FontWeight.normal,
+        fontWeight: FontWeight.w500,
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
       floatingLabelBehavior: FloatingLabelBehavior.never,
-      contentPadding: const EdgeInsets.all(15),
+      contentPadding: const EdgeInsets.all(10),
       filled: true,
       fillColor: Colors.white,
       labelStyle: const TextStyle(

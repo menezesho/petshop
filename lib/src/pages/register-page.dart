@@ -40,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
           'registro'.toUpperCase(),
           style: const TextStyle(
             color: ColorsConstants.strongGreen,
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.w900,
           ),
         ),

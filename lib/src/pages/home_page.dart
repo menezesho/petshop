@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:petshop/src/pages/add_pet_page.dart';
 import 'package:petshop/src/pages/pets_page.dart';
 import 'package:petshop/src/ui/constants.dart';
 
@@ -91,7 +92,7 @@ class HomePage extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const PetsPage(),
+                              builder: (context) => const AddPetPage(),
                             ),
                           );
                         },

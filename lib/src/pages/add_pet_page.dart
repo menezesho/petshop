@@ -3,22 +3,21 @@ import 'package:petshop/src/database/mysql_configuration.dart';
 import 'package:petshop/src/ui/constants.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+class AddPetPage extends StatefulWidget {
+  const AddPetPage({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<AddPetPage> createState() => _AddPetPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _AddPetPageState extends State<AddPetPage> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _cpfController = TextEditingController();
   final TextEditingController _birthController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _userController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  String? typeSelectedItem;
+  String? raceSelectedItem;
+  String? sizeSelectedItem;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +36,7 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         centerTitle: true,
         title: Text(
-          'registro'.toUpperCase(),
+          'cadastro do pet'.toUpperCase(),
           style: const TextStyle(
             color: ColorsConstants.strongGreen,
             fontSize: 18,
@@ -82,32 +81,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         TextFormField(
                           inputFormatters: [
                             MaskTextInputFormatter(
-                                mask: '###.###.###-##',
-                                filter: {"#": RegExp(r'[0-9]')})
-                          ],
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'O CPF deve ser preenchido!';
-                            }
-                            if (value.length < 14) {
-                              return 'O CPF deve ser válido!';
-                            }
-                            return null;
-                          },
-                          controller: _cpfController,
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                            label: Text('CPF'),
-                            hintText: 'Digite seu CPF',
-                          ),
-                          style: Theme.of(context).textTheme.labelMedium,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        TextFormField(
-                          inputFormatters: [
-                            MaskTextInputFormatter(
                                 mask: '##/##/####',
                                 filter: {"#": RegExp(r'[0-9]')})
                           ],
@@ -129,58 +102,39 @@ class _RegisterPageState extends State<RegisterPage> {
                         const SizedBox(
                           height: 10,
                         ),
-                        TextFormField(
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'O e-mail deve ser preenchido!';
-                            }
-                            if (!value.contains('@') || !value.contains('.')) {
-                              return 'O e-mail deve ser válido!';
-                            }
-                            return null;
+                        FormField<String>(
+                          builder: (FormFieldState<String> state) {
+                            return InputDecorator(
+                              decoration: InputDecoration(
+                                labelText: 'Selecione uma opção',
+                                errorText: state.errorText,
+                              ),
+                              isEmpty: typeSelectedItem == null,
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                                  value: typeSelectedItem,
+                                  isDense: true,
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      typeSelectedItem = newValue;
+                                    });
+                                  },
+                                  items: <String>[
+                                    'Opção 1',
+                                    'Opção 2',
+                                    'Opção 3',
+                                    // Adicione suas opções aqui
+                                  ].map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            );
                           },
-                          controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: const InputDecoration(
-                            label: Text('E-mail'),
-                            hintText: 'Digite seu e-mail',
-                          ),
-                          style: Theme.of(context).textTheme.labelMedium,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        TextFormField(
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'O usuário deve ser preenchido!';
-                            }
-                            return null;
-                          },
-                          controller: _userController,
-                          decoration: const InputDecoration(
-                            label: Text('Usuário'),
-                            hintText: 'Digite seu usuário',
-                          ),
-                          style: Theme.of(context).textTheme.labelMedium,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        TextFormField(
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'A senha deve ser preenchida!';
-                            }
-                            return null;
-                          },
-                          controller: _passwordController,
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                            label: Text('Senha'),
-                            hintText: 'Digite sua senha',
-                          ),
-                          style: Theme.of(context).textTheme.labelMedium,
                         ),
                         const SizedBox(
                           height: 20,
@@ -198,15 +152,18 @@ class _RegisterPageState extends State<RegisterPage> {
                             style: TextStyle(fontSize: 16.0),
                           ),
                           onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              submit(
-                                  _nameController.text,
-                                  _cpfController.text.replaceAll('.', '').replaceAll('-', ''),
-                                  DateTime.parse(_birthController.text.replaceAll('/', '')),
-                                  _emailController.text,
-                                  _userController.text,
-                                  _passwordController.text);
-                            }
+                            // if (_formKey.currentState!.validate()) {
+                            //   submit(
+                            //       _nameController.text,
+                            //       _cpfController.text
+                            //           .replaceAll('.', '')
+                            //           .replaceAll('-', ''),
+                            //       DateTime.parse(_birthController.text
+                            //           .replaceAll('/', '')),
+                            //       _emailController.text,
+                            //       _userController.text,
+                            //       _passwordController.text);
+                            // }
                           },
                         ),
                       ],

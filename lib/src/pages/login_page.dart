@@ -225,20 +225,25 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void submit(String user, String password) async {
-    // Verifica os campos do formulário
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
-    // Realiza a conexão com o banco de dados
-    var connect = await MySqlConfiguration().connection;
-    // Realiza a consulta no banco de dados
-    var result = await connect.query(
-        "SELECT ID, NOME, USUARIO FROM PESSOA WHERE USUARIO = '$user' AND SENHA = '$password';");
-    if (result.isEmpty) {
-      failAcess(); // Acesso negado
-    } else {
-      String name = result.first['NOME'].toString();
-      successfulAcess(name); // Acesso autorizado
+    try {
+      // Verifica os campos do formulário
+      if (!_formKey.currentState!.validate()) {
+        return;
+      }
+      // Realiza a conexão com o banco de dados
+      var connect = await MySqlConfiguration().connection;
+      var result = await connect.query(
+        "SELECT ID, NOME, USUARIO FROM PESSOA WHERE USUARIO = ? AND SENHA = ?;",
+        [user, password],
+      );
+      if (result.isEmpty) {
+        failAcess(); // Acesso negado
+      } else {
+        String name = result.first['NOME'].toString();
+        successfulAcess(name); // Acesso autorizado
+      }
+    } catch (e) {
+      failConnection(); // Falha na conexão
     }
   }
 
@@ -255,12 +260,27 @@ class _LoginPageState extends State<LoginPage> {
         },
       ),
     );
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Usuário autenticado com sucesso!"),
+        backgroundColor: ColorsConstants.strongGreen,
+      ),
+    );
   }
 
   void failAcess() {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text("Usuário e/ou senha inválidos!"),
+        backgroundColor: ColorsConstants.red,
+      ),
+    );
+  }
+
+  void failConnection() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Falha de conexão, tente novamente mais tarde!"),
         backgroundColor: ColorsConstants.red,
       ),
     );

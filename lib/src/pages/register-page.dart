@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:petshop/src/database/mysql_configuration.dart';
 import 'package:petshop/src/ui/constants.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -12,12 +13,12 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _cpfController = TextEditingController();
-  final TextEditingController _birthController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _userController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  TextEditingController _nameController = new TextEditingController();
+  TextEditingController _cpfController = new TextEditingController();
+  TextEditingController _birthController = new TextEditingController();
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _userController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +63,12 @@ class _RegisterPageState extends State<RegisterPage> {
                           height: 20,
                         ),
                         TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'O nome deve ser preenchido!';
+                            }
+                            return null;
+                          },
                           controller: _nameController,
                           decoration: const InputDecoration(
                             label: Text('Nome'),
@@ -73,6 +80,20 @@ class _RegisterPageState extends State<RegisterPage> {
                           height: 10,
                         ),
                         TextFormField(
+                          inputFormatters: [
+                            MaskTextInputFormatter(
+                                mask: '###.###.###-##',
+                                filter: {"#": RegExp(r'[0-9]')})
+                          ],
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'O CPF deve ser preenchido!';
+                            }
+                            if (value.length < 14) {
+                              return 'O CPF deve ser válido!';
+                            }
+                            return null;
+                          },
                           controller: _cpfController,
                           keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
@@ -85,6 +106,18 @@ class _RegisterPageState extends State<RegisterPage> {
                           height: 10,
                         ),
                         TextFormField(
+                          inputFormatters: [
+                            MaskTextInputFormatter(
+                                mask: '##/##/####',
+                                filter: {"#": RegExp(r'[0-9]')})
+                          ],
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'A data de nascimento deve ser preenchida!';
+                            }
+                            //fazer verificação de data válida
+                            return null;
+                          },
                           controller: _birthController,
                           keyboardType: TextInputType.datetime,
                           decoration: const InputDecoration(
@@ -97,6 +130,12 @@ class _RegisterPageState extends State<RegisterPage> {
                           height: 10,
                         ),
                         TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'O e-mail deve ser preenchido!';
+                            }
+                            return null;
+                          },
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           decoration: const InputDecoration(
@@ -109,6 +148,12 @@ class _RegisterPageState extends State<RegisterPage> {
                           height: 10,
                         ),
                         TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'O usuário deve ser preenchido!';
+                            }
+                            return null;
+                          },
                           controller: _userController,
                           decoration: const InputDecoration(
                             label: Text('Usuário'),
@@ -120,6 +165,12 @@ class _RegisterPageState extends State<RegisterPage> {
                           height: 10,
                         ),
                         TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'A senha deve ser preenchida!';
+                            }
+                            return null;
+                          },
                           controller: _passwordController,
                           obscureText: true,
                           decoration: const InputDecoration(
@@ -144,15 +195,16 @@ class _RegisterPageState extends State<RegisterPage> {
                             style: TextStyle(fontSize: 16.0),
                           ),
                           onPressed: () {
-                            // DateTime birth = DateTime.parse(_birthController.text);
-                            // print(birth);
-                            submit(
-                                _nameController.text,
-                                _cpfController.text,
-                                DateTime.parse(_birthController.text),
-                                _emailController.text,
-                                _userController.text,
-                                _passwordController.text);
+                            if (_formKey.currentState!.validate()) {
+                              _formKey.currentState!.save();
+                              submit(
+                                  _nameController.text,
+                                  _cpfController.text.replaceAll('.', '').replaceAll('-', ''),
+                                  DateTime.parse(_birthController.text.replaceAll('/', '')),
+                                  _emailController.text,
+                                  _userController.text,
+                                  _passwordController.text);
+                            }
                           },
                         ),
                       ],
@@ -181,7 +233,7 @@ class _RegisterPageState extends State<RegisterPage> {
           "INSERT INTO PESSOA (NOME, CPF, NASCIMENTO, EMAIL, USUARIO, SENHA) VALUES ('$name', '$cpf', '$birth', '$email', '$user', '$password');");
       successful();
     } catch (e) {
-      fail();
+      fail(e);
     }
   }
 
@@ -195,7 +247,8 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  void fail() {
+  void fail(e) {
+    print(e);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text("Não foi possível efetuar o cadastro!"),

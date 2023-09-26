@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:petshop/src/database/mysql_configuration.dart';
 import 'package:petshop/src/ui/constants.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddPetPage extends StatefulWidget {
   const AddPetPage({super.key});
@@ -11,12 +14,23 @@ class AddPetPage extends StatefulWidget {
 }
 
 class _AddPetPageState extends State<AddPetPage> {
+  XFile? _imageFile;
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _birthController = TextEditingController();
   String? typeSelectedItem;
   String? breedSelectedItem;
+
+  Future<void> _pickImage() async {
+    final imagePicker = ImagePicker();
+    final pickedImage =
+        await imagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _imageFile = pickedImage;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +71,55 @@ class _AddPetPageState extends State<AddPetPage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        GestureDetector(
+                          onTap: _pickImage,
+                          child: Container(
+                            width: 150.0,
+                            height: 150.0,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: ColorsConstants.grey),
+                              borderRadius: BorderRadius.circular(100.0),
+                            ),
+                            child: _imageFile != null
+                                ? ClipOval(
+                                    child: Image.file(
+                                      File(_imageFile!.path),
+                                      width: 150.0,
+                                      height: 150.0,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
+                                : const Center(
+                                    child: Icon(
+                                      Icons.add_photo_alternate_rounded,
+                                      color: ColorsConstants.grey,
+                                      size: 50.0,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                        if (_imageFile != null)
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(0, 30),
+                              backgroundColor: ColorsConstants.red,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
+                            child: const Text(
+                              'Remover imagem',
+                              style: TextStyle(fontSize: 12.0),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _imageFile = null;
+                              });
+                            },
+                          ),
                         const SizedBox(
                           height: 20,
                         ),
@@ -211,7 +274,8 @@ class _AddPetPageState extends State<AddPetPage> {
     try {
       // Realiza a inserção no banco de dados
       await connect.query(
-          "INSERT INTO ANIMAL (NOME, NASCIMENTO, TIPO, ID_RACA) VALUES (?, ?, ?, ?);", [name, birth, type, breed]);
+          "INSERT INTO ANIMAL (NOME, NASCIMENTO, TIPO, ID_RACA) VALUES (?, ?, ?, ?);",
+          [name, birth, type, breed]);
       successful();
     } catch (e) {
       fail(e);

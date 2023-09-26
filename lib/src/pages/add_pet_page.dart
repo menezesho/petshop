@@ -227,7 +227,7 @@ class _AddPetPageState extends State<AddPetPage> {
                           },
                         ),
                         const SizedBox(
-                          height: 10,
+                          height: 20,
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(

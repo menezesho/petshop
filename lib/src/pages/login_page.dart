@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/background_login_image.jpg'),
-            opacity: 0.3,
+            opacity: 0.2,
             fit: BoxFit.cover,
           ),
         ),
@@ -45,10 +45,10 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           Image.asset(
                             'assets/images/logo_petshop.png',
-                            height: 180.0,
+                            height: 150.0,
                           ),
                           const SizedBox(
-                            height: 40,
+                            height: 20,
                           ),
                           TextFormField(
                             validator: (value) {
@@ -160,43 +160,36 @@ class _LoginPageState extends State<LoginPage> {
                           const SizedBox(
                             height: 2,
                           ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: const Size.fromHeight(40),
-                              backgroundColor: Colors.transparent,
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                side: const BorderSide(
-                                  color: Colors.white,
-                                  width: 1.0,
-                                ),
-                              ),
-                            ),
-                            child: const Text(
-                              'Primeiro acesso',
-                              style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.normal),
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                PageRouteBuilder(
-                                  pageBuilder:
-                                      (context, animation, secondaryAnimation) {
-                                    return const RegisterPage();
-                                  },
-                                  transitionsBuilder: (context, animation,
-                                      secondaryAnimation, child) {
-                                    return customTransition(
-                                        context, animation, child);
-                                  },
-                                ),
-                              );
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) {
+                              return const RegisterPage();
+                            },
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              return customTransition(
+                                  context, animation, child);
                             },
                           ),
-                        ],
+                        );
+                      },
+                      child: const Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Text(
+                          'Primeiro acesso? Crie uma conta!',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                        ),
                       ),
                     ),
                   ],

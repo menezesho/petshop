@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:petshop/src/pages/edit_pet_page.dart';
 import 'package:petshop/src/pages/login_page.dart';
+import 'package:petshop/src/pages/splash_page.dart';
 import 'package:petshop/src/ui/theme.dart';
 
-void main() async {
+void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Petshop',
       theme: PetShopTheme.themeData,
-      home: EditPetPage(idPet: 2),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const SplashPage(),
+        '/pages/login_page': (context) => LoginPage(),
+      },
     );
   }
 }

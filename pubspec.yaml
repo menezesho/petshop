@@ -38,6 +38,7 @@ dependencies:
   mysql1: ^0.20.0
   mask_text_input_formatter: ^2.5.0
   image_picker: ^1.0.4
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

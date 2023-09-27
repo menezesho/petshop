@@ -5,7 +5,7 @@ import 'package:petshop/src/ui/constants.dart';
 
 class HomePage extends StatelessWidget {
   final String name;
-  const HomePage({super.key, required this.name});
+  const HomePage({required this.name, super.key});
 
   @override
   Widget build(BuildContext context) {

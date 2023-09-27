@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: PetShopTheme.themeData,
-      home: AddPetPage(),
+      home: LoginPage(),
     );
   }
 }

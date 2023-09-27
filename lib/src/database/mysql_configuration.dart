@@ -16,7 +16,7 @@ class MySqlConfiguration implements DBConfiguration {
   Future createConnection() async {
     return await MySqlConnection.connect(
       ConnectionSettings(
-        host: '192.168.0.110',
+        host: '192.168.56.1',
         port: 3306,
         user: 'administrador',
         password: 'Teste@123',

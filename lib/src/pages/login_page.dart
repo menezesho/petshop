@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:petshop/src/database/mysql_configuration.dart';
 import 'package:petshop/src/pages/home_page.dart';
+import 'package:petshop/src/pages/petshop_loader.dart';
 import 'package:petshop/src/pages/register-page.dart';
 import 'package:petshop/src/ui/constants.dart';
 
@@ -153,8 +154,18 @@ class _LoginPageState extends State<LoginPage> {
                               style: TextStyle(fontSize: 16.0),
                             ),
                             onPressed: () {
-                              submit(widget._userController.text,
-                                  widget._passwordController.text);
+                              if (_formKey.currentState!.validate()) {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return const Center(
+                                      child: PetshopLoader(),
+                                    );
+                                  },
+                                );
+                                submit(widget._userController.text,
+                                    widget._passwordController.text);
+                              }
                             },
                           ),
                           const SizedBox(
@@ -236,11 +247,13 @@ class _LoginPageState extends State<LoginPage> {
         successfulAcess(name); // Acesso autorizado
       }
     } catch (e) {
+      print(e);
       failConnection(); // Falha na conexão
     }
   }
 
   void successfulAcess(String name) {
+    Navigator.of(context).pop();
     widget._userController.text = name;
     Navigator.push(
       context,
@@ -262,6 +275,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void failAcess() {
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text("Usuário e/ou senha inválidos!"),
@@ -271,6 +285,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void failConnection() {
+    Navigator.of(context).pop();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text("Falha de conexão, tente novamente mais tarde!"),

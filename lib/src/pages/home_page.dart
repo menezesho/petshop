@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:petshop/src/pages/add_pet_page.dart';
+import 'package:petshop/src/pages/information_page.dart';
 import 'package:petshop/src/pages/pets_page.dart';
 import 'package:petshop/src/ui/constants.dart';
 
@@ -16,7 +17,20 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) {
+                    return const InformationPage();
+                  },
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return customTransition(context, animation, child);
+                  },
+                ),
+              );
+            },
             icon: const Icon(
               Icons.menu,
               color: ColorsConstants.strongGreen,
@@ -39,7 +53,7 @@ class HomePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        'Olá, $name!',
+                        'Olá, ${name[0].toUpperCase()}${name.substring(1)}!',
                         style: const TextStyle(
                           color: ColorsConstants.strongGreen,
                           fontSize: 20.0,
@@ -168,6 +182,21 @@ class HomePage extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+
+  Widget customTransition(
+      BuildContext context, Animation<double> animation, Widget child) {
+    const begin = Offset(1.0, 0.0);
+    const end = Offset.zero;
+    const curve = Curves.easeInOut;
+
+    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+    var offsetAnimation = animation.drive(tween);
+
+    return SlideTransition(
+      position: offsetAnimation,
+      child: child,
     );
   }
 }

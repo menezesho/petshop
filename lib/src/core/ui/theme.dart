@@ -1,4 +1,4 @@
-import 'package:petshop/src/ui/constants.dart';
+import 'package:petshop/src/core/ui/constants.dart';
 import 'package:flutter/material.dart';
 
 sealed class PetShopTheme {

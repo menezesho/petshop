@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:petshop/src/database/mysql_configuration.dart';
 import 'package:petshop/src/pages/home_page.dart';
-import 'package:petshop/src/pages/petshop_loader.dart';
+import 'package:petshop/src/pages/load/petshop_loader.dart';
 import 'package:petshop/src/pages/register-page.dart';
-import 'package:petshop/src/ui/constants.dart';
+import 'package:petshop/src/core/ui/constants.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({super.key});

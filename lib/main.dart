@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:petshop/src/pages/load/splash_page.dart';
 import 'package:petshop/src/pages/login_page.dart';
-import 'package:petshop/src/pages/splash_page.dart';
-import 'package:petshop/src/ui/theme.dart';
+import 'package:petshop/src/core/ui/theme.dart';
 
 void main() {
   runApp(const MyApp());

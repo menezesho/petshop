@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:petshop/src/ui/constants.dart';
+import 'package:petshop/src/core/ui/constants.dart';
 
 class InformationPage extends StatefulWidget {
   const InformationPage({super.key});

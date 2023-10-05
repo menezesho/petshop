@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:petshop/src/pages/add_pet_page.dart';
+import 'package:petshop/src/pages/add/add_pet_page.dart';
 import 'package:petshop/src/pages/information_page.dart';
 import 'package:petshop/src/pages/pets_page.dart';
-import 'package:petshop/src/ui/constants.dart';
+import 'package:petshop/src/core/ui/constants.dart';
 
 class HomePage extends StatelessWidget {
   final String name;

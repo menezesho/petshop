@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:petshop/src/core/utils/functions.dart';
 import 'package:petshop/src/database/mysql_configuration.dart';
-import 'package:petshop/src/ui/constants.dart';
+import 'package:petshop/src/pages/load/petshop_loader.dart';
+import 'package:petshop/src/core/ui/constants.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -19,6 +21,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _userController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  String? formattedDate;
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +118,10 @@ class _RegisterPageState extends State<RegisterPage> {
                             if (value == null || value.isEmpty) {
                               return 'A data de nascimento deve ser preenchida!';
                             }
-                            //fazer verificação de data válida
+                            formattedDate = Functions.validateDate(value)!;
+                            if (formattedDate == null) {
+                              return 'A data de nascimento deve ser válida!';
+                            }
                             return null;
                           },
                           controller: _birthController,
@@ -199,10 +205,21 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const Center(
+                                    child: PetshopLoader(),
+                                  );
+                                },
+                              );
                               submit(
                                   _nameController.text,
-                                  _cpfController.text.replaceAll('.', '').replaceAll('-', ''),
-                                  DateTime.parse(_birthController.text.replaceAll('/', '')),
+                                  _cpfController.text
+                                      .replaceAll('.', '')
+                                      .replaceAll('-', ''),
+                                  DateTime.parse(_birthController.text
+                                      .replaceAll('/', '')),
                                   _emailController.text,
                                   _userController.text,
                                   _passwordController.text);
@@ -223,13 +240,13 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void submit(String name, String cpf, DateTime birth, String email,
       String user, String password) async {
-    // Verifica os campos do formulário
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
-    // Realiza a conexão com o banco de dados
-    var connect = await MySqlConfiguration().connection;
     try {
+      // Verifica os campos do formulário
+      if (!_formKey.currentState!.validate()) {
+        return;
+      }
+      // Realiza a conexão com o banco de dados
+      var connect = await MySqlConfiguration().connection;
       // Realiza a inserção no banco de dados
       await connect.query(
           "INSERT INTO PESSOA (NOME, CPF, NASCIMENTO, EMAIL, USUARIO, SENHA) VALUES ('$name', '$cpf', '$birth', '$email', '$user', '$password');");
@@ -240,7 +257,9 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void successful() {
-    Navigator.pop(context);
+    Navigator.pop(context); // Fecha o loader
+    Navigator.pop(context); // Retorna para a tela de login
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text("Cadastro efetuado com sucesso!"),
@@ -251,9 +270,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void fail(e) {
     print(e);
+    Navigator.pop(context); // Fecha o loader
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text("Não foi possível efetuar o cadastro!"),
+        content: Text("Falha de conexão, tente novamente mais tarde!"),
         backgroundColor: ColorsConstants.red,
       ),
     );

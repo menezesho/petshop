@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:petshop/src/core/utils/animations.dart';
 import 'package:petshop/src/database/mysql_configuration.dart';
 import 'package:petshop/src/pages/home_page.dart';
 import 'package:petshop/src/pages/load/petshop_loader.dart';
@@ -185,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
                             },
                             transitionsBuilder: (context, animation,
                                 secondaryAnimation, child) {
-                              return customTransition(
+                              return Animations().easeInOutTransition(
                                   context, animation, child);
                             },
                           ),
@@ -210,21 +211,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget customTransition(
-      BuildContext context, Animation<double> animation, Widget child) {
-    const begin = Offset(1.0, 0.0);
-    const end = Offset.zero;
-    const curve = Curves.easeInOut;
-
-    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-    var offsetAnimation = animation.drive(tween);
-
-    return SlideTransition(
-      position: offsetAnimation,
-      child: child,
     );
   }
 
@@ -262,7 +248,7 @@ class _LoginPageState extends State<LoginPage> {
           return HomePage(name: name);
         },
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return customTransition(context, animation, child);
+          return Animations().easeInOutTransition(context, animation, child);
         },
       ),
     );

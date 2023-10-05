@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:petshop/src/pages/add/add_pet_page.dart';
+import 'package:petshop/src/core/utils/animations.dart';
 import 'package:petshop/src/pages/information_page.dart';
 import 'package:petshop/src/pages/pets_page.dart';
 import 'package:petshop/src/core/ui/constants.dart';
@@ -26,7 +26,8 @@ class HomePage extends StatelessWidget {
                   },
                   transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {
-                    return customTransition(context, animation, child);
+                    return Animations()
+                        .easeInOutTransition(context, animation, child);
                   },
                 ),
               );
@@ -105,8 +106,16 @@ class HomePage extends StatelessWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => const AddPetPage(),
+                            PageRouteBuilder(
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) {
+                                return const PetsPage();
+                              },
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                return Animations().easeInOutTransition(
+                                    context, animation, child);
+                              },
                             ),
                           );
                         },
@@ -182,21 +191,6 @@ class HomePage extends StatelessWidget {
           )
         ],
       ),
-    );
-  }
-
-  Widget customTransition(
-      BuildContext context, Animation<double> animation, Widget child) {
-    const begin = Offset(1.0, 0.0);
-    const end = Offset.zero;
-    const curve = Curves.easeInOut;
-
-    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-    var offsetAnimation = animation.drive(tween);
-
-    return SlideTransition(
-      position: offsetAnimation,
-      child: child,
     );
   }
 }

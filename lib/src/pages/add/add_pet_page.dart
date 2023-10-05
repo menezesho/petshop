@@ -5,7 +5,6 @@ import 'package:petshop/src/database/mysql_configuration.dart';
 import 'package:petshop/src/core/ui/constants.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 
 class AddPetPage extends StatefulWidget {
   const AddPetPage({super.key});

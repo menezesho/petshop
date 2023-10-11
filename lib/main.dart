@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:petshop/src/pages/add/add_pet_page.dart';
 import 'package:petshop/src/pages/load/splash_page.dart';
 import 'package:petshop/src/pages/login_page.dart';
 import 'package:petshop/src/core/ui/theme.dart';
+import 'package:petshop/src/pages/pets_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,8 +19,9 @@ class MyApp extends StatelessWidget {
       theme: PetShopTheme.themeData,
       initialRoute: '/',
       routes: {
-        '/': (context) => const SplashPage(),
-        '/pages/login_page': (context) => LoginPage(),
+        // '/': (context) => const SplashPage(),
+        // '/pages/login_page': (context) => LoginPage(),
+        '/': (context) => const PetsPage(),
       },
     );
   }
